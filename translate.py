@@ -40,7 +40,8 @@ class Translator:
                 input_ids=inputs["input_ids"],
                 attention_mask=inputs["attention_mask"],
                 forced_bos_token_id=forced_id,
-                max_new_tokens=40
+                max_new_tokens=25,
+                num_beams=1,  
             )
 
         return self.tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
