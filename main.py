@@ -15,6 +15,8 @@ def main():
     stt = SpeechToText()
     tts = TextToSpeech()
 
+    translator = None  
+
     while True:
         print('\nMain Menu: Choose language')
         print('1 - French')
@@ -39,25 +41,24 @@ def main():
 
         target_lang = lang_map[op]
 
-        # 1. Record audio
+       
+        if translator is None or translator.target_lang != target_lang:
+            translator = Translator(target_lang=target_lang)
+
         audio_file = audio_recorder.record_ptt()
         if not audio_file:
             print("Recording failed")
             continue
 
-        # 2. Speech to text
         text = stt.transcribe(audio_file)
         if not text:
             print("No speech detected")
             continue
 
-        # 3. Translate
-        translator = Translator(target_lang=target_lang)
         translated = translator.translate(text)
 
         print("Translated:", translated)
 
-        # 4. Speak
         tts.speak(translated, lang="en")
 
         break
