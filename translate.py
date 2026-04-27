@@ -24,7 +24,7 @@ class Translator:
         inputs = self.tokenizer(text, return_tensors="pt")
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
 
-        forced_id = self.tokenizer.lang_code_to_id[target_lang]
+        forced_id = self.tokenizer.convert_tokens_to_ids(target_lang)
 
         with torch.no_grad():
             outputs = self.model.generate(
