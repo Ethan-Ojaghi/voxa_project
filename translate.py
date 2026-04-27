@@ -29,10 +29,11 @@ class Translator:
         if target_lang is None:
             target_lang = self.target_lang
 
+        text = text.strip()[:150]
+
         inputs = self.tokenizer(text, return_tensors="pt")
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
 
-       
         forced_id = self.tokenizer.convert_tokens_to_ids(target_lang)
 
         with torch.inference_mode():
@@ -40,8 +41,11 @@ class Translator:
                 input_ids=inputs["input_ids"],
                 attention_mask=inputs["attention_mask"],
                 forced_bos_token_id=forced_id,
-                max_new_tokens=25,
-                num_beams=1,  
+
+                num_beams=1,
+                do_sample=False,
+                max_new_tokens=20,
+                early_stopping=True,
             )
 
         return self.tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
