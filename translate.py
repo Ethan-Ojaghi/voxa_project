@@ -33,7 +33,7 @@ class Translator:
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
 
        
-        forced_id = self.tokenizer.lang_code_to_id[target_lang]
+        forced_id = self.tokenizer.convert_tokens_to_ids(target_lang)
 
         with torch.inference_mode():
             outputs = self.model.generate(
