@@ -1,0 +1,10 @@
+# config.py
+
+TARGET_LANGUAGE = "en"
+
+SAMPLE_RATE = 16000
+RECORD_SECONDS = 10
+
+MODEL_SIZE = "base"
+
+OFFLINE_MODE = True
