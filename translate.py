@@ -1,4 +1,6 @@
 import torch
+torch.set_num_threads(2)
+
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 
@@ -17,19 +19,20 @@ class Translator:
             local_files_only=True
         )
 
-        self.model.eval()
-        self.model.config.use_cache = True  
+        self.model.config.use_cache = True
+        self.model.generation_config.use_cache = True
 
         self.tokenizer.src_lang = "eng_Latn"
 
         self.device = torch.device("cpu")
         self.model.to(self.device)
+        self.model.eval()
 
     def translate(self, text, target_lang=None):
         if target_lang is None:
             target_lang = self.target_lang
 
-        text = text.strip()[:150]
+        text = text.strip()[:80]
 
         inputs = self.tokenizer(text, return_tensors="pt")
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
@@ -38,16 +41,15 @@ class Translator:
 
         with torch.inference_mode():
             outputs = self.model.generate(
-            input_ids=inputs["input_ids"],
-            attention_mask=inputs["attention_mask"],
-            forced_bos_token_id=forced_id,
+                input_ids=inputs["input_ids"],
+                attention_mask=inputs["attention_mask"],
+                forced_bos_token_id=forced_id,
 
-            num_beams=1,
-            do_sample=False,
-            max_new_tokens=20,
+                num_beams=1,
+                do_sample=False,
 
-            use_cache=True,
-            early_stopping=False
-        )
+                max_new_tokens=10, 
+            )
+        
 
         return self.tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
