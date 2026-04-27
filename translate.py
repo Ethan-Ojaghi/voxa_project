@@ -38,14 +38,16 @@ class Translator:
 
         with torch.inference_mode():
             outputs = self.model.generate(
-                input_ids=inputs["input_ids"],
-                attention_mask=inputs["attention_mask"],
-                forced_bos_token_id=forced_id,
+            input_ids=inputs["input_ids"],
+            attention_mask=inputs["attention_mask"],
+            forced_bos_token_id=forced_id,
 
-                num_beams=1,
-                do_sample=False,
-                max_new_tokens=20,
-                early_stopping=True,
-            )
+            num_beams=1,
+            do_sample=False,
+            max_new_tokens=20,
+
+            use_cache=True,
+            early_stopping=False
+        )
 
         return self.tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
