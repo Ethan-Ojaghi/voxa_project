@@ -4,9 +4,12 @@ from translate import Translator
 def main():
     print("Translation test mode")
 
+    # Pick OPUS-MT model (Spanish example)
+    model_name = "Helsinki-NLP/opus-mt-en-es"
+
     # load model ONCE and time it
     start = time.time()
-    translator = Translator(target_lang="spa_Latn")
+    translator = Translator(model_name=model_name)
     print(f"MODEL LOAD TIME: {time.time() - start:.2f}s\n")
 
     while True:
@@ -18,6 +21,7 @@ def main():
         # time translation only
         start = time.time()
         result = translator.translate(text)
+
         print(f"\nTranslated: {result}")
         print(f"TRANSLATION TIME: {time.time() - start:.2f}s\n")
 
