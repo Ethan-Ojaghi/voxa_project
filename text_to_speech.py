@@ -3,18 +3,16 @@
 from gtts import gTTS
 import os
 
+import os
 
 class TextToSpeech:
 
-    def speak(self, text, lang="en"):
+    def speak(self, text):
         if not text:
             return
 
         try:
-            tts = gTTS(text=text, lang=lang)
-            tts.save("output.mp3")
-
-            os.system("mpg321 output.mp3 > /dev/null 2>&1")
+            os.system(f'espeak "{text}"')
 
         except Exception as e:
             print("TTS error:", e)
