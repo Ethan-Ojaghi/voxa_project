@@ -18,6 +18,7 @@ class Translator:
         )
 
         self.model.eval()
+        self.model.config.use_cache = True  
 
         self.tokenizer.src_lang = "eng_Latn"
 
@@ -31,13 +32,15 @@ class Translator:
         inputs = self.tokenizer(text, return_tensors="pt")
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
 
-        forced_id = self.tokenizer.convert_tokens_to_ids(target_lang)
+       
+        forced_id = self.tokenizer.lang_code_to_id[target_lang]
 
-        with torch.no_grad():
+        with torch.inference_mode():
             outputs = self.model.generate(
                 input_ids=inputs["input_ids"],
                 attention_mask=inputs["attention_mask"],
-                forced_bos_token_id=forced_id
+                forced_bos_token_id=forced_id,
+                max_new_tokens=40
             )
 
         return self.tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
