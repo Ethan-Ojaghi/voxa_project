@@ -8,7 +8,7 @@ def record_ptt(device_index=1):
     recognizer = sr.Recognizer()
 
     try:
-        # 👇 FORCE correct mic here
+        
         with sr.Microphone(device_index=device_index) as source:
             recognizer.adjust_for_ambient_noise(source)
             print("Recording...")
