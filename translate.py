@@ -9,12 +9,12 @@ class Translator:
 
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_name,
-            #local_files_only=True
+            local_files_only=False
         )
 
         self.model = AutoModelForSeq2SeqLM.from_pretrained(
             self.model_name,
-            #local_files_only=True
+            local_files_only=False
         )
 
         self.model.eval()
