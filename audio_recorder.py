@@ -4,15 +4,17 @@ import os
 
 
 def record_ptt(device_index=1):
-    """Record audio from microphone and save to a file."""
     recognizer = sr.Recognizer()
 
     try:
-        
+        print("Using microphone index:", device_index)
+
         with sr.Microphone(device_index=device_index) as source:
-            recognizer.adjust_for_ambient_noise(source)
+            print("Adjusting for ambient noise...")
+            recognizer.adjust_for_ambient_noise(source, duration=1)
+
             print("Recording...")
-            audio = recognizer.listen(source, timeout=10)
+            audio = recognizer.listen(source, phrase_time_limit=5)
 
         os.makedirs("recordings", exist_ok=True)
 
@@ -25,12 +27,6 @@ def record_ptt(device_index=1):
         print(f"Audio saved to {audio_file}")
         return audio_file
 
-    except sr.UnknownValueError:
-        print("Audio recognition error: Could not understand audio")
-        return None
-    except sr.RequestError as e:
-        print(f"Audio recording error: {e}")
-        return None
     except Exception as e:
-        print(f"Unexpected error during recording: {e}")
+        print(f"Recording error: {e}")
         return None
