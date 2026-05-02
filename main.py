@@ -24,7 +24,6 @@ def main():
         print('2 - Italian')
         print('3 - Spanish')
         print('4 - German')
-        print('5 - Mandarin')
 
         op = input('Option: ')
 
