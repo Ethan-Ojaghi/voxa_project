@@ -1,9 +1,10 @@
 import torch
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
 
 
 class Translator:
     def __init__(self, model_name):
+        from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
         self.model_name = model_name
 
         self.tokenizer = AutoTokenizer.from_pretrained(
