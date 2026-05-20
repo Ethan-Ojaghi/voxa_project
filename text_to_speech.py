@@ -24,6 +24,7 @@ class TextToSpeech:
                 [
                     "espeak-ng",
                     "-v", voice,
+                    "-s", "155",   # slower = clearer (default ~175–200)
                     text
                 ],
                 stdout=subprocess.DEVNULL,
