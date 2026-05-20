@@ -1,23 +1,28 @@
-# text_to_speech.py
-
-from gtts import gTTS
-from pydub import AudioSegment
 import os
+import subprocess
+import tempfile
 
 class TextToSpeech:
+    def __init__(self):
+        self.voice_path = "/home/voxa/piper/en_US-lessac-medium.onnx"
+
     def speak(self, text, lang="en"):
         if not text:
             return
 
         try:
-            tts = gTTS(text=text, lang=lang)
-            tts.save("output.mp3")
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+                wav_path = f.name
 
-            # convert to wav
-            sound = AudioSegment.from_mp3("output.mp3")
-            sound.export("output.wav", format="wav")
+            cmd = [
+                "piper",
+                "--model", self.voice_path,
+                "--output_file", wav_path
+            ]
 
-            os.system("aplay -D plughw:2,0 output.wav > /dev/null 2>&1")
+            subprocess.run(cmd, input=text.encode(), check=True)
+
+            os.system(f"aplay {wav_path} > /dev/null 2>&1")
 
         except Exception as e:
             print("TTS error:", e)
