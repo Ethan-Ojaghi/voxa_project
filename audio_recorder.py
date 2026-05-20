@@ -1,6 +1,7 @@
 import speech_recognition as sr
 from datetime import datetime
 import os
+import subprocess
 
 
 def record_ptt(device_index=1):
