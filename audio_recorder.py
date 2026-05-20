@@ -3,6 +3,12 @@ from datetime import datetime
 import os
 import subprocess
 
+def beep():
+    subprocess.run(
+        ["aplay", "-q", "beep.wav"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
 
 def record_ptt(device_index=1):
     recognizer = sr.Recognizer()
