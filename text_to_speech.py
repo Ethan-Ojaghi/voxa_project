@@ -1,10 +1,6 @@
 import subprocess
 import unicodedata
 
-text = unicodedata.normalize("NFKD", text)
-text = text.encode("ascii", "ignore").decode("ascii")
-
-
 class TextToSpeech:
 
     def __init__(self):
@@ -13,6 +9,9 @@ class TextToSpeech:
     def speak(self, text, lang="en"):
 
         try:
+
+            text = unicodedata.normalize("NFKD", text)
+            text = text.encode("ascii", "ignore").decode("ascii")
 
             lang_map = {
                 "en": "en",
