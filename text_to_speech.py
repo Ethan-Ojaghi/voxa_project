@@ -12,17 +12,20 @@ class TextToSpeech:
         )
 
         print("Piper ready (fast mode)")
-
+        
     def speak(self, text):
-
         try:
-            audio = self.voice.synthesize(text)
-
-            sd.play(audio.audio, audio.sample_rate)
+            audio_chunks = self.voice.synthesize(text)
+    
+            all_audio = b"".join(audio_chunks)
+            audio = np.frombuffer(all_audio, dtype=np.int16)
+    
+            import sounddevice as sd
+            sd.play(audio, 22050)
             sd.wait()
-
+    
         except Exception as e:
             print("TTS error:", e)
-
+            
     def cleanup(self):
         pass
