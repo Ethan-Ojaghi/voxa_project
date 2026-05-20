@@ -45,14 +45,7 @@ def main():
                     "3": "Helsinki-NLP/opus-mt-en-es",
                     "4": "Helsinki-NLP/opus-mt-en-de"
                 }
-
-                lang_code = {
-                    "Helsinki-NLP/opus-mt-en-fr": "fr",
-                    "Helsinki-NLP/opus-mt-en-it": "it",
-                    "Helsinki-NLP/opus-mt-en-es": "es",
-                    "Helsinki-NLP/opus-mt-en-de": "de",
-                }[target_lang]
-
+                
                 if op not in lang_map:
                     print("Invalid option")
                     continue
@@ -60,6 +53,14 @@ def main():
                 target_lang = lang_map[op]
                 current_lang = target_lang
 
+                lang_code_map = {
+                    "Helsinki-NLP/opus-mt-en-fr": "fr",
+                    "Helsinki-NLP/opus-mt-en-it": "it",
+                    "Helsinki-NLP/opus-mt-en-es": "es",
+                    "Helsinki-NLP/opus-mt-en-de": "de",
+                }
+
+                lang_code = lang_code_map[target_lang]
                 # =========================
                 # TRANSLATOR INIT TIMER
                 # =========================
