@@ -46,6 +46,13 @@ def main():
                     "4": "Helsinki-NLP/opus-mt-en-de"
                 }
 
+                lang_code = {
+                    "Helsinki-NLP/opus-mt-en-fr": "fr",
+                    "Helsinki-NLP/opus-mt-en-it": "it",
+                    "Helsinki-NLP/opus-mt-en-es": "es",
+                    "Helsinki-NLP/opus-mt-en-de": "de",
+                }[target_lang]
+
                 if op not in lang_map:
                     print("Invalid option")
                     continue
@@ -99,7 +106,7 @@ def main():
             # TTS TIMER
             # =========================
             start = time.time()
-            tts.speak(translated)
+            tts.speak(translated, lang=lang_code)
             print(f"TTS TIME: {time.time() - start:.2f}s")
 
             # =========================
