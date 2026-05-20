@@ -1,4 +1,8 @@
 import subprocess
+import unicodedata
+
+text = unicodedata.normalize("NFKD", text)
+text = text.encode("ascii", "ignore").decode("ascii")
 
 
 class TextToSpeech:
