@@ -13,13 +13,6 @@ from text_to_speech import TextToSpeech
 import audio_recorder
 
 
-def beep():
-    subprocess.run(
-        ["aplay", "-q", "beep.wav"],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL
-    )
-
 def main():
 
     stt = SpeechToText()
