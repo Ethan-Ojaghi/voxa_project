@@ -1,28 +1,32 @@
 from piper import PiperVoice
+import wave
 import sounddevice as sd
 import numpy as np
+import tempfile
 
 
 class TextToSpeech:
 
     def __init__(self):
         print("Loading Piper voice...")
-
         self.voice = PiperVoice.load(
             "/home/voxa/piper/en_US-lessac-low.onnx"
         )
-
         print("Piper ready")
 
     def speak(self, text):
         try:
-            # Piper returns PCM generator (NOT AudioChunk objects you inspect)
-            audio = b"".join(self.voice.synthesize(text))
+            # create temp wav file
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+                wav_path = f.name
 
-            # convert PCM16 -> numpy
-            audio_np = np.frombuffer(audio, dtype=np.int16)
+            # let Piper handle EVERYTHING
+            with wave.open(wav_path, "wb") as wav_file:
+                self.voice.synthesize_wav(text, wav_file)
 
-            sd.play(audio_np, samplerate=22050)
+            # play result
+            data, samplerate = sf.read(wav_path, dtype="int16")
+            sd.play(data, samplerate)
             sd.wait()
 
         except Exception as e:
