@@ -95,7 +95,7 @@ def main():
         # TTS TIMER
         # =========================
         start = time.time()
-        tts.speak(translated, lang="en")
+        tts.speak(translated)
         print(f"TTS TIME: {time.time() - start:.2f}s")
 
         # =========================
