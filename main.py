@@ -1,5 +1,6 @@
 import os
 import time
+import subprocess
 
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
@@ -11,6 +12,13 @@ from speech_to_text import SpeechToText
 from text_to_speech import TextToSpeech
 import audio_recorder
 
+
+def beep():
+    subprocess.run(
+        ["aplay", "-q", "beep.wav"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
 
 def main():
 
@@ -85,8 +93,9 @@ def main():
             # =========================
             start = time.time()
             audio_file = audio_recorder.record_ptt()
+            
             print(f"RECORDING TIME: {time.time() - start:.2f}s")
-
+            beep()
             if not audio_file:
                 print("Recording failed")
                 continue
