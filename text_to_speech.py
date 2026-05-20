@@ -20,18 +20,26 @@ class TextToSpeech:
     
             audio_chunks = self.voice.synthesize(text)
     
-            audio_list = []
+            pcm_parts = []
     
             for chunk in audio_chunks:
-                # extract raw PCM depending on format
-                if hasattr(chunk, "audio"):
-                    audio_list.append(chunk.audio)
-                elif hasattr(chunk, "data"):
-                    audio_list.append(chunk.data)
-                else:
-                    audio_list.append(np.frombuffer(chunk, dtype=np.int16))
     
-            audio = np.concatenate(audio_list)
+                # Case 1: already numpy-like
+                if hasattr(chunk, "audio"):
+                    pcm_parts.append(chunk.audio)
+    
+                # Case 2: raw data field
+                elif hasattr(chunk, "pcm"):
+                    pcm_parts.append(chunk.pcm)
+    
+                elif hasattr(chunk, "data"):
+                    pcm_parts.append(chunk.data)
+    
+                # Case 3: fallback (AudioChunk object → extract buffer)
+                else:
+                    pcm_parts.append(np.array(chunk, dtype=np.int16))
+    
+            audio = np.concatenate(pcm_parts)
     
             sd.play(audio, 22050)
             sd.wait()
