@@ -92,7 +92,6 @@ def main():
             # AUDIO RECORD
             # =========================
             start = time.time()
-            beep()
             audio_file = audio_recorder.record_ptt()
             
             print(f"RECORDING TIME: {time.time() - start:.2f}s")
