@@ -14,6 +14,7 @@ def record_ptt(device_index=1):
             recognizer.adjust_for_ambient_noise(source, duration=1)
 
             print("Recording...")
+            beep()
             audio = recognizer.listen(source, phrase_time_limit=5)
 
         os.makedirs("recordings", exist_ok=True)
