@@ -34,7 +34,7 @@ class TextToSpeech:
                 subprocess.run([
                     "espeak-ng",
                     "-v", voice,
-                    "-s", "155",   # speed tuning (important)
+                    "-s", "145",   # speed tuning
                     chunk
                 ])
 
