@@ -11,13 +11,15 @@ class SpeechToText:
 
     def transcribe(self, audio_file):
         try:
-            result = model.transcribe(
+            result = self.model.transcribe(
                 audio_file,
                 fp16=False,
                 language="en",
                 temperature=0,
                 condition_on_previous_text=False
             )
+
+            text = result.get("text", "").strip()
 
             if not text:
                 return ""
