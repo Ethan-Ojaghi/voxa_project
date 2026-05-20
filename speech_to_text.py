@@ -1,25 +1,26 @@
-# speech_to_text.py
-
-import whisper
+from faster_whisper import WhisperModel
 from config import MODEL_SIZE
 
 
 class SpeechToText:
     def __init__(self):
-        print("Loading Whisper model...")
-        self.model = whisper.load_model(MODEL_SIZE)
+        print("Loading Faster-Whisper model...")
+
+        self.model = WhisperModel(
+            MODEL_SIZE,
+            device="cpu",
+            compute_type="int8"
+        )
 
     def transcribe(self, audio_file):
         try:
-            result = self.model.transcribe(
+            segments, info = self.model.transcribe(
                 audio_file,
-                fp16=False,
                 language="en",
-                temperature=0,
-                condition_on_previous_text=False
+                beam_size=1
             )
 
-            text = result.get("text", "").strip()
+            text = " ".join(segment.text for segment in segments).strip()
 
             if not text:
                 return ""
