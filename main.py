@@ -70,10 +70,10 @@ def main():
             # =========================
             # CONVERSATION LOOP
             # =========================
-            print("\nChoose Option (ENTER = continue | 1 = change language | exit = quit)")
+            print("\nChoose Option (ENTER = start | 1 = change language | 2 = quit)")
             cont = input("> ").strip().lower()
 
-            if cont == "exit":
+            if cont == "2":
                 print("Exiting VOXA")
                 break
 
