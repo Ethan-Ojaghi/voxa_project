@@ -15,12 +15,24 @@ class TextToSpeech:
         
     def speak(self, text):
         try:
+            import numpy as np
+            import sounddevice as sd
+    
             audio_chunks = self.voice.synthesize(text)
     
-            all_audio = b"".join(audio_chunks)
-            audio = np.frombuffer(all_audio, dtype=np.int16)
+            audio_list = []
     
-            import sounddevice as sd
+            for chunk in audio_chunks:
+                # extract raw PCM depending on format
+                if hasattr(chunk, "audio"):
+                    audio_list.append(chunk.audio)
+                elif hasattr(chunk, "data"):
+                    audio_list.append(chunk.data)
+                else:
+                    audio_list.append(np.frombuffer(chunk, dtype=np.int16))
+    
+            audio = np.concatenate(audio_list)
+    
             sd.play(audio, 22050)
             sd.wait()
     
