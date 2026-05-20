@@ -77,7 +77,7 @@ def main():
             # =========================
             # CONVERSATION LOOP
             # =========================
-            print("\nSpeak now... (ENTER = continue | 1 = change language | exit = quit)")
+            print("\nChoose Option (ENTER = continue | 1 = change language | exit = quit)")
             cont = input("> ").strip().lower()
 
             if cont == "exit":
