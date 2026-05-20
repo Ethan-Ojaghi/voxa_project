@@ -1,8 +1,7 @@
 # text_to_speech.py
 
 from gtts import gTTS
-import os
-
+from pydub import AudioSegment
 import os
 
 class TextToSpeech:
@@ -13,7 +12,12 @@ class TextToSpeech:
         try:
             tts = gTTS(text=text, lang=lang)
             tts.save("output.mp3")
-            os.system("mpg321 output.mp3 > /dev/null 2>&1")
+
+            # convert to wav
+            sound = AudioSegment.from_mp3("output.mp3")
+            sound.export("output.wav", format="wav")
+
+            os.system("aplay -D plughw:2,0 output.wav > /dev/null 2>&1")
 
         except Exception as e:
             print("TTS error:", e)
