@@ -4,7 +4,7 @@ import subprocess
 class TextToSpeech:
 
     def __init__(self):
-        print("Using eSpeak TTS (fast mode)")
+        print("Using eSpeak TTS (balanced mode)")
 
     def speak(self, text, lang="en"):
 
@@ -20,16 +20,23 @@ class TextToSpeech:
 
             voice = lang_map.get(lang, "en")
 
-            subprocess.run(
-                [
+            # ---- IMPROVE CLARITY ----
+            text = text.strip() + "."
+
+            # split long sentences for clarity
+            chunks = text.split(".")
+
+            for chunk in chunks:
+                chunk = chunk.strip()
+                if not chunk:
+                    continue
+
+                subprocess.run([
                     "espeak-ng",
                     "-v", voice,
-                    "-s", "155",   # slower = clearer (default ~175–200)
-                    text
-                ],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL
-            )
+                    "-s", "155",   # speed tuning (important)
+                    chunk
+                ])
 
         except Exception as e:
             print("TTS error:", e)
