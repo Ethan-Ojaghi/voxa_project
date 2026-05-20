@@ -18,61 +18,71 @@ def main():
     tts = TextToSpeech()
 
     translator = None
-    current_lang = None
+    lang_code = None
+
+    lang_map = {
+        "1": "Helsinki-NLP/opus-mt-en-fr",
+        "2": "Helsinki-NLP/opus-mt-en-it",
+        "3": "Helsinki-NLP/opus-mt-en-es",
+        "4": "Helsinki-NLP/opus-mt-en-de"
+    }
+
+    lang_code_map = {
+        "Helsinki-NLP/opus-mt-en-fr": "fr",
+        "Helsinki-NLP/opus-mt-en-it": "it",
+        "Helsinki-NLP/opus-mt-en-es": "es",
+        "Helsinki-NLP/opus-mt-en-de": "de",
+    }
 
     try:
 
         while True:
 
+            # =========================
+            # LANGUAGE MENU
+            # =========================
             if translator is None:
-
-                print('\nMain Menu: Choose language')
-                print('1 - French')
-                print('2 - Italian')
-                print('3 - Spanish')
-                print('4 - German')
+                print("\nMain Menu: Choose language")
+                print("1 - French")
+                print("2 - Italian")
+                print("3 - Spanish")
+                print("4 - German")
                 print("Type 'exit' to quit")
 
-                op = input('Option: ').strip().lower()
+                op = input("Option: ").strip().lower()
 
                 if op == "exit":
                     print("Exiting VOXA")
                     break
 
-                lang_map = {
-                    "1": "Helsinki-NLP/opus-mt-en-fr",
-                    "2": "Helsinki-NLP/opus-mt-en-it",
-                    "3": "Helsinki-NLP/opus-mt-en-es",
-                    "4": "Helsinki-NLP/opus-mt-en-de"
-                }
-                
                 if op not in lang_map:
                     print("Invalid option")
                     continue
 
                 target_lang = lang_map[op]
-                current_lang = target_lang
-
-                lang_code_map = {
-                    "Helsinki-NLP/opus-mt-en-fr": "fr",
-                    "Helsinki-NLP/opus-mt-en-it": "it",
-                    "Helsinki-NLP/opus-mt-en-es": "es",
-                    "Helsinki-NLP/opus-mt-en-de": "de",
-                }
-
                 lang_code = lang_code_map[target_lang]
-                # =========================
-                # TRANSLATOR INIT TIMER
-                # =========================
+
                 start = time.time()
                 translator = Translator(model_name=target_lang)
                 print(f"MODEL LOAD TIME: {time.time() - start:.2f}s")
 
             # =========================
+            # CONVERSATION LOOP
+            # =========================
+            print("\nSpeak now... (ENTER = continue | 1 = change language | exit = quit)")
+            cont = input("> ").strip().lower()
+
+            if cont == "exit":
+                print("Exiting VOXA")
+                break
+
+            if cont == "1":
+                translator = None
+                continue
+
+            # =========================
             # AUDIO RECORD
             # =========================
-            print("\nSpeak now (or type 'exit' to quit)...")
-
             start = time.time()
             audio_file = audio_recorder.record_ptt()
             print(f"RECORDING TIME: {time.time() - start:.2f}s")
@@ -82,7 +92,7 @@ def main():
                 continue
 
             # =========================
-            # STT TIMER
+            # STT
             # =========================
             start = time.time()
             text = stt.transcribe(audio_file)
@@ -95,7 +105,7 @@ def main():
             print("You said:", text)
 
             # =========================
-            # TRANSLATION TIMER
+            # TRANSLATION
             # =========================
             start = time.time()
             translated = translator.translate(text)
@@ -104,24 +114,15 @@ def main():
             print("Translated:", translated)
 
             # =========================
-            # TTS TIMER
+            # TTS
             # =========================
             start = time.time()
             tts.speak(translated)
             print(f"TTS TIME: {time.time() - start:.2f}s")
 
-            # =========================
-            # CONTINUE / EXIT CONTROL
-            # =========================
-            cont = input("\nPress ENTER to continue, or type 'exit': ").strip().lower()
-
-            if cont == "exit":
-                print("Exiting VOXA")
-                break
-
     finally:
         tts.cleanup()
 
+
 if __name__ == "__main__":
     main()
-  
