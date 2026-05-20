@@ -20,9 +20,20 @@ class TextToSpeech:
                 "--output_file", wav_path
             ]
 
-            subprocess.run(cmd, input=text.encode(), check=True)
+            subprocess.run(
+                cmd,
+                input=text,
+                text=True,
+                check=True
+            )
 
-            os.system(f"aplay {wav_path} > /dev/null 2>&1")
+            subprocess.run(
+                ["aplay", "-D", "plughw:2,0", wav_path],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+
+            os.remove(wav_path)
 
         except Exception as e:
             print("TTS error:", e)
