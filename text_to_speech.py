@@ -5,7 +5,7 @@ import os
 
 class TextToSpeech:
     def __init__(self):
-        self.voice_path = "/home/voxa/piper/en_US-lessac-medium.onnx"
+        self.voice_path = "/home/voxa/piper/en_US-lessac-low.onnx"
 
     def speak(self, text, lang="en"):
         if not text:
