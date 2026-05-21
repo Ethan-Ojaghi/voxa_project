@@ -23,11 +23,14 @@ class Translator:
         self.model.to(self.device)
 
     def translate(self, text):
-        text = text.strip()[:80]
-
+    
+        text = text.strip()
+    
+        print("INPUT TO TRANSLATOR:", repr(text))
+    
         inputs = self.tokenizer(text, return_tensors="pt")
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
-
+    
         with torch.inference_mode():
             outputs = self.model.generate(
                 **inputs,
@@ -35,5 +38,5 @@ class Translator:
                 do_sample=False,
                 max_new_tokens=100
             )
-
+    
         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
