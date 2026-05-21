@@ -9,7 +9,7 @@ class TextToSpeech:
     def __init__(self):
         print("Loading Piper voice...")
         self.voice = PiperVoice.load(
-            "/home/voxa/piper/en_US-lessac-low.onnx"
+            "/home/voxa/piper/en_US-lessac-medium.onnx"
         )
         print("Piper ready")
 
